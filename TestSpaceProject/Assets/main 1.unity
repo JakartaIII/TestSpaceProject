@@ -3728,7 +3728,7 @@ MonoBehaviour:
   portalCount: 1
   meteorit: {fileID: 1744273603380466, guid: 94d8e8aebe502ea429f62d7c0cdc56ea, type: 2}
   healthpack: {fileID: 1760230845969924, guid: f0162759e218c144b9af85a07c9072f4, type: 2}
-  portalObj: {fileID: 1099175240310320, guid: bda37d0db3bfe414fa3aeee018751c47, type: 2}
+  portalObj: {fileID: 1099175240310320, guid: 4bd4f20e936904b4bada6ae2c1d90b0a, type: 2}
   Player: {fileID: 0}
 --- !u!4 &1131655273
 Transform:
