@@ -27,7 +27,7 @@ public class spaceObjScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Vector3.Magnitude(transform.position-Player.transform.position)>500f)
+		if(Vector3.Magnitude(transform.position-Player.transform.position)>300f)
 		{
 			if(isMeteor)
 			{

@@ -17,6 +17,8 @@ public class rocketScript : MonoBehaviour {
 	{
 		if(other.gameObject.tag=="Meteor")
 		{
+			FindObjectOfType<savedSceneData>().AddLogText("-ракета уничтожила метеорит");
+			FindObjectOfType<moveShip>().meteoritsCount++;
 			FindObjectOfType<meteoritSpawn>().meteoritCount++;
 			Destroy(this.gameObject);
 			Destroy(other.gameObject);

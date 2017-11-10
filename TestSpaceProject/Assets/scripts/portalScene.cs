@@ -11,12 +11,21 @@ public class portalScene : MonoBehaviour {
 		{
 			if(SecondSceen)
 			{
+				FindObjectOfType<savedSceneData>().AddLogText("-корабль переместился через портал");
+				saveDataToNextScene();
 				Application.LoadLevel(0);
 			} 
 			else
 			{
+				FindObjectOfType<savedSceneData>().AddLogText("-корабль переместился через портал");
+				saveDataToNextScene();
 				Application.LoadLevel(1);
 			}
 		}
+	}
+	void saveDataToNextScene()
+	{
+		FindObjectOfType<savedSceneData>().health = FindObjectOfType<moveShip>().health;
+		FindObjectOfType<savedSceneData>().meteorCount = FindObjectOfType<moveShip>().meteoritsCount;
 	}
 }

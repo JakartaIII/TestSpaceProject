@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 public class moveShip : MonoBehaviour {
 	Rigidbody rigid;
 	public float x,y,xR,yR,xM,yM; // input клавиатура и мышь 
@@ -12,22 +13,44 @@ public class moveShip : MonoBehaviour {
 	[SerializeField] GameObject  canon1, canon2; // точки выстрела
 	[SerializeField] Rigidbody rocket; //ракета обьект
 	public float health = 100; //здоровье
+	public float meteoritsCount; //количество метеоритов уничтожено
 	float invincTime;//время после получения урона
+	bool shipDestroyed;
+	[SerializeField] Text healthText, meteoritText; 
 	[SerializeField] ParticleSystem ParticleEm;
 	// Use this for initialization
 	void Start () {
 		rigid = GetComponent<Rigidbody>();
+		health = FindObjectOfType<savedSceneData>().health;
+		meteoritsCount = FindObjectOfType<savedSceneData>().meteorCount;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		InputVariables();
-		RigidbodyMove();
-		Shooting();
+		if(health>0)
+		{
+            RigidbodyMove();
+			if(!EventSystem.current.IsPointerOverGameObject()) Shooting();
+            shipDestroyed = false;
+        }
+		else 
+		{
+			if (!shipDestroyed)
+            {
+				Cursor.lockState = CursorLockMode.None;
+           		Cursor.visible = true;
+                FindObjectOfType<savedSceneData>().AddLogText("-корабль уничтожен");
+                shipDestroyed = true;
+            }
+		}
 		if(health>100) health =100;
 		if(health<0) health = 0;
 		if(invincTime>0)invincTime-=Time.deltaTime;
-		ParticleEmis();
+		
+		healthText.text = ""+health;
+		meteoritText.text = ""+meteoritsCount;
+
 	}
 	void RigidbodyMove()
 	{
@@ -54,11 +77,13 @@ public class moveShip : MonoBehaviour {
 	void ParticleEmis()
 	{
 		var mainp = ParticleEm.main;
+		if(shipDestroyed) mainp.simulationSpeed = 1;
+		else
 		mainp.simulationSpeed =1+16*y ;
 	}
 	void Shooting()
 	{
-		if(LKM)
+		if(LKM||Input.GetKey(KeyCode.RightControl))
 		{
 			if(shootTimer<=0)
 			{
@@ -97,11 +122,14 @@ public class moveShip : MonoBehaviour {
 	{
 		if(other.gameObject.tag=="Meteor"&&invincTime<=0)
 		{
-			health-=10;
+			FindObjectOfType<savedSceneData>().AddLogText("-корабль столкнулся с метеоритом");
+			health-=Random.Range(10,30);
 			invincTime = 2;
 		}		
 		if(other.gameObject.tag=="HealthPack")
 		{
+			FindObjectOfType<savedSceneData>().AddLogText("-корабль пополнил здоровье");
+			FindObjectOfType<meteoritSpawn>().healthpackCount++;
 			health+=20;
 			Destroy(other.gameObject);
 			rigid.angularVelocity = new Vector3(0,0,0);
