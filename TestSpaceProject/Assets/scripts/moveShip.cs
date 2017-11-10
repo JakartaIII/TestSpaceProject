@@ -47,7 +47,7 @@ public class moveShip : MonoBehaviour {
 		if(health>100) health =100;
 		if(health<0) health = 0;
 		if(invincTime>0)invincTime-=Time.deltaTime;
-		
+		ParticleEmis();
 		healthText.text = ""+health;
 		meteoritText.text = ""+meteoritsCount;
 

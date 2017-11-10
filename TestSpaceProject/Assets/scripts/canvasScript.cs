@@ -26,6 +26,8 @@ public class canvasScript : MonoBehaviour {
 	}
 	public void restartLevel() //перезапустить уровень
 	{
+		FindObjectOfType<savedSceneData>().health = 80;
+		FindObjectOfType<savedSceneData>().meteorCount = 0;
 		Time.timeScale = 1;
 		Application.LoadLevel(0);
 	}
